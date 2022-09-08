@@ -4,15 +4,17 @@ import './App.css';
 const socket = new WebSocket("wss://hometask.eg1236.com/game-pipes/"
 );
 
+
+
 type Props = {
     thisMap : string[][]
 }
 function TableMap({thisMap} : Props){
-    let mapHtml = <table>
+    let mapHtml = <table id={'tableMap'}>
         <tbody>
         {thisMap.map(
-            (item) => <tr>{item.map(
-                (element) => <td>{element}</td>
+            (item, index) => <tr>{item.map(
+                (element, i) => <td id={`${index}-${i}`} className={"mapElement"}>{element}</td>
             )}</tr>)
         }
         </tbody>
@@ -32,25 +34,13 @@ function App() {
   const [currentMap, setCurrentMap] =  useState([[""]]);
 
 
-  async function sendCommand(command : string | ArrayBufferLike | Blob | ArrayBufferView) {
-      await (async () => {
-          socket.onopen = (event) => {
-              socket.send(command)
-          }
-      })()
-  }
-
-
-
-
-
-
-    useEffect(() => {
+  useEffect(() => {
         socket.onmessage = (message) => {
             console.log(message.data)
             if(message.data[0] == "m"){
 
                 let map = message.data.split("\n").slice(1,-1)
+                //let map = "┏━╸┏╸╻┏╸\n┣╸╺╋┳┛┃╻\n┗┓┏┛┃╻┃┃\n╻┣┫╻╹┃┣┛\n┃╹┣┫╻┣┻╸\n┗┓┃┗┻┫╻╻\n┏┫┣┓┏╋┛┃\n╹┗┛╹╹┗━┛".split("\n")
                 map.forEach((item:string) => item.split(''))
                 map = map.map(function(item : string) { return item.split("") });
 
@@ -66,9 +56,27 @@ function App() {
       socket.onopen = (event) => {
           socket.send("new 1")
           socket.send("map")
+          window.addEventListener('load', function () {
+              console.log('loaded')
+              const mapLikeHTMLCollection = document.getElementById('tableMap')!.getElementsByClassName('mapElement')
+              console.log(mapLikeHTMLCollection)
+
+              document.getElementById('verify')?.addEventListener('click', () => {
+                  socket.send('verify')
+              })
+
+              for(let i = 0; i < mapLikeHTMLCollection.length; i++) {
+                  mapLikeHTMLCollection.item(i)?.addEventListener('click',  () => {
+                    const [y, x] = mapLikeHTMLCollection.item(i)!.id.split("-")
+                    socket.send(`rotate ${x} ${y}`)
+                    socket.send('map')
+                    console.log('done')
+                })
+              };
+
+          })
 
       }
-
 
 
   }, [])
@@ -80,7 +88,7 @@ function App() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo"/>
             <TableMap thisMap={currentMap} />
-
+            <button id={'verify'}>verify</button>
         </header>
       </div>
   );
