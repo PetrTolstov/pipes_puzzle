@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 const socket = new WebSocket("wss://hometask.eg1236.com/game-pipes/"
 );
-
+let mapLikeHTMLCollection : HTMLCollection
 
 
 type Props = {
@@ -19,16 +19,90 @@ function TableMap({thisMap} : Props){
         }
         </tbody>
     </table>
-    /*
-    console.log(thisMap)
-    thisMap.forEach(function(item: any) {
-        let tds = ""
-        item.forEach((function(item: string) {  tds += `<td>${item}</td>` }))
-        mapHtml += `<tr>${tds}</tr>` });
-    mapHtml+=""
-     */
     return mapHtml
 }
+
+
+const right = "right"
+const left = "left"
+const down = "down"
+const up = "up"
+
+
+const puzzlesConfig = {
+    "╻": {
+        connectsDirections: [up],
+        isAHalf: true
+    },
+    "╹": {
+        connectsDirections: [down],
+        isAHalf: true
+    },
+    "╺": {
+        connectsDirections: [left],
+        isAHalf: true
+    },
+    "╸": {
+        connectsDirections: [right],
+        isAHalf: true
+    },
+
+
+    "┗": {
+        connectsDirections: [down, left],
+        isAHalf: false
+    },
+    "┏": {
+        connectsDirections: [up, left],
+        isAHalf: false
+    },
+    "┓": {
+        connectsDirections: [up, right],
+        isAHalf: false
+    },
+    "┛": {
+        connectsDirections: [right],
+        isAHalf: false
+    },
+
+
+    "┫": {
+        connectsDirections: [down, up, right],
+        isAHalf: false
+    },
+    "┻": {
+        connectsDirections: [down, left, right],
+        isAHalf: false
+    },
+    "┣": {
+        connectsDirections: [down, up, left],
+        isAHalf: false
+    },
+    "┳": {
+        connectsDirections: [up, right, left],
+        isAHalf: false
+    },
+
+    "╋": {
+        connectsDirections: [up, down, right, left],
+        isAHalf: false
+    },
+
+    "━": {
+        connectsDirections: [right, left],
+        isAHalf: false
+    },
+
+    "┃": {
+        connectsDirections: [up, down],
+        isAHalf: false
+    },
+}
+
+function checkMap(position : string){
+
+}
+
 
 function App() {
   const [currentMap, setCurrentMap] =  useState([[""]]);
@@ -37,6 +111,10 @@ function App() {
   useEffect(() => {
         socket.onmessage = (message) => {
             console.log(message.data)
+
+            if(message.data[0] == "v"){
+                alert(message.data)
+            }
             if(message.data[0] == "m"){
 
                 let map = message.data.split("\n").slice(1,-1)
@@ -58,7 +136,7 @@ function App() {
           socket.send("map")
           window.addEventListener('load', function () {
               console.log('loaded')
-              const mapLikeHTMLCollection = document.getElementById('tableMap')!.getElementsByClassName('mapElement')
+              mapLikeHTMLCollection = document.getElementById('tableMap')!.getElementsByClassName('mapElement')
               console.log(mapLikeHTMLCollection)
 
               document.getElementById('verify')?.addEventListener('click', () => {
@@ -67,10 +145,12 @@ function App() {
 
               for(let i = 0; i < mapLikeHTMLCollection.length; i++) {
                   mapLikeHTMLCollection.item(i)?.addEventListener('click',  () => {
-                    const [y, x] = mapLikeHTMLCollection.item(i)!.id.split("-")
-                    socket.send(`rotate ${x} ${y}`)
-                    socket.send('map')
-                    console.log('done')
+                        const str : string = mapLikeHTMLCollection.item(i)!.textContent!.toString()
+                        // @ts-ignore
+                      console.log(puzzlesConfig[str])
+                        const [y, x] = mapLikeHTMLCollection.item(i)!.id.split("-")
+                        socket.send(`rotate ${x} ${y}`)
+                        socket.send('map')
                 })
               };
 
