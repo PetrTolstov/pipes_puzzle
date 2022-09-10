@@ -5,6 +5,18 @@ const socket = new WebSocket("wss://hometask.eg1236.com/game-pipes/"
 );
 let mapLikeHTMLCollection : HTMLCollection
 let setOfCheckedCoords = new Set();
+let rotationMap = [
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0],
+    [0,0,0,0,0,0,0,0]
+]
+
+let boolean = true
 
 type Props = {
     thisMap : string[][]
@@ -28,6 +40,27 @@ const left = "left"
 const down = "down"
 const up = "up"
 
+const manualRotation = {
+    "╻" : "╸",
+    "╸" : "╹",
+    "╹" : "╺",
+    "╺" : "╻",
+
+    "┗" : "┏",
+    "┏" : "┓",
+    "┓" : "┛",
+    "┛" : "┗",
+
+    "┫" : "┻",
+    "┻" : "┣",
+    "┣" : "┳",
+    "┳" : "┫",
+
+    "╋" : "╋",
+
+    "━" : "┃",
+    "┃" : "━"
+}
 
 const puzzlesConfig = {
     "╻": {
@@ -144,27 +177,48 @@ function checkMap(position : string){
                 // @ts-ignore
                 let nextElementConfig = puzzlesConfig[nextElement]
                 // @ts-ignore
-                console.log(nextElementConfig.connectsDirections.indexOf(reverseDirection(direction)))
-                console.log(nextElement)
-                console.log(reverseDirection(direction))
-                console.log(nextElementConfig.connectsDirections)
+                //console.log(nextElementConfig.connectsDirections.indexOf(reverseDirection(direction)))
+               // console.log(nextElement)
+                //console.log(reverseDirection(direction))
+               // console.log(nextElementConfig.connectsDirections)
                 // @ts-ignore
                 if (nextElementConfig.connectsDirections.indexOf(reverseDirection(direction)) >= 0){
                     checkMap(`${ny}-${nx}`)
                 }
             }
         }
-        //mapLikeHTMLCollection
+
     }
 }
 
+function coordForNextRotation(){
+    for (let y = 0; y < rotationMap.length; y++){
+        for (let x = 0; x < rotationMap[y].length; x++){
+            console.log(x)
+            if(rotationMap[y][x] < 4){
+                if( x-1 >= 0){
+                    rotationMap[y][x-1] = 0
+                } else if( y-1 >= 0){
+                    rotationMap[y-1][-1] = 0
+                }
+                rotationMap[y][x] += 1
 
+                console.log(rotationMap)
+
+                return [x, y]
+            }
+        }
+    }
+}
 
 function App() {
   const [currentMap, setCurrentMap] =  useState([[""]]);
+  const [previosMap, setPreviosMap] =  useState([[""]]);
+  const [exampleMap, setExampleMap] =  useState([[""]]);
 
 
-  useEffect(() => {
+
+    useEffect(() => {
         socket.onmessage = (message) => {
             console.log(message.data)
 
@@ -177,10 +231,18 @@ function App() {
                 //let map = "┏━╸┏╸╻┏╸\n┣╸╺╋┳┛┃╻\n┗┓┏┛┃╻┃┃\n╻┣┫╻╹┃┣┛\n┃╹┣┫╻┣┻╸\n┗┓┃┗┻┫╻╻\n┏┫┣┓┏╋┛┃\n╹┗┛╹╹┗━┛".split("\n")
                 map.forEach((item:string) => item.split(''))
                 map = map.map(function(item : string) { return item.split("") });
+                console.log(exampleMap.length)
+                if(boolean){
+                    console.log(exampleMap)
+                    setExampleMap(map)
 
+                }
+
+                boolean = false
 
                 console.log(map)
                 setCurrentMap(map)
+
             }
 
         };
@@ -191,16 +253,53 @@ function App() {
           socket.send("new 1")
           socket.send("map")
           window.addEventListener('load', function () {
-              console.log('loaded')
+              //console.log('loaded')
               mapLikeHTMLCollection = document.getElementById('tableMap')!.getElementsByClassName('mapElement')
-              console.log(mapLikeHTMLCollection)
+             // console.log(mapLikeHTMLCollection)
 
               document.getElementById('verify')?.addEventListener('click', () => {
                   socket.send('verify')
               })
 
               document.getElementById('checkMap')?.addEventListener('click', () => {
-                  checkMap('0-0')
+
+                  let id = setInterval(() => {
+
+                      //console.log(currentMap != previosMap)
+                      if(setOfCheckedCoords.size < 64 ){ // && currentMap != previosMap
+                          setOfCheckedCoords.clear()
+
+
+                          let mapLikeArray = Array.prototype.slice.call(mapLikeHTMLCollection);
+                          mapLikeArray.forEach((item) => {
+                              item.style.color = "white"
+                          })
+                          checkMap('0-0')
+
+                          // @ts-ignore
+                          let [xc, yc] = coordForNextRotation()
+                          let cMap = exampleMap
+                          // @ts-ignore
+                          cMap[yc][xc] = manualRotation[cMap[yc][xc]]
+                          setExampleMap(cMap)
+
+                          //socket.send(`rotate ${coordForNextRotation()}`)
+                          //socket.send('map')
+                          //console.log(setOfCheckedCoords)
+
+                          //setPreviosMap(currentMap)
+                          console.log(currentMap)
+                          console.log(setOfCheckedCoords.size)
+                      }else if(setOfCheckedCoords.size >= 64 ){
+                          clearInterval(id)
+                      }
+
+                  }, 1)
+
+
+
+
+
               })
 
               for(let i = 0; i < mapLikeHTMLCollection.length; i++) {
@@ -219,6 +318,7 @@ function App() {
       }
 
 
+
   }, [])
 
 
@@ -228,8 +328,10 @@ function App() {
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo"/>
             <TableMap thisMap={currentMap} />
+
             <button id={'verify'}>verify</button>
             <button id={'checkMap'}>check</button>
+            <TableMap thisMap={exampleMap} />
         </header>
       </div>
   );
