@@ -4,7 +4,7 @@ import './App.css';
 const socket = new WebSocket("wss://hometask.eg1236.com/game-pipes/"
 );
 let mapLikeHTMLCollection : HTMLCollection
-
+let setOfCheckedCoords = new Set();
 
 type Props = {
     thisMap : string[][]
@@ -61,7 +61,7 @@ const puzzlesConfig = {
         isAHalf: false
     },
     "┛": {
-        connectsDirections: [right],
+        connectsDirections: [right, down],
         isAHalf: false
     },
 
@@ -99,9 +99,65 @@ const puzzlesConfig = {
     },
 }
 
-function checkMap(position : string){
-
+function reverseDirection(d : string){
+    if (d == up){
+        return down
+    } else if(d == down){
+        return up
+    } else if(d == right){
+        return left
+    } else if(d == left){
+        return right
+    }
 }
+
+function checkMap(position : string){
+    if (!setOfCheckedCoords.has(position)){
+        setOfCheckedCoords.add(position)
+        const [y, x] = position.split("-")
+
+        const element = document.getElementById(position)!.textContent
+        document.getElementById(position)!.style.color = "green"
+        // @ts-ignore
+        const elementConfig = puzzlesConfig[element]
+
+        for(let direction of elementConfig.connectsDirections){
+            let [nx, ny]  = [parseInt(x),parseInt(y)]
+            switch (direction){
+                case down:
+                    ny -= 1
+                    break
+                case up:
+                    ny += 1
+                    break
+                case left:
+                    nx += 1
+                    break
+                case right:
+                    nx -= 1
+                    break
+            }
+
+            if (nx >= 0 && ny >= 0){
+                let nextElement = document.getElementById(`${ny}-${nx}`)!.textContent
+
+                // @ts-ignore
+                let nextElementConfig = puzzlesConfig[nextElement]
+                // @ts-ignore
+                console.log(nextElementConfig.connectsDirections.indexOf(reverseDirection(direction)))
+                console.log(nextElement)
+                console.log(reverseDirection(direction))
+                console.log(nextElementConfig.connectsDirections)
+                // @ts-ignore
+                if (nextElementConfig.connectsDirections.indexOf(reverseDirection(direction)) >= 0){
+                    checkMap(`${ny}-${nx}`)
+                }
+            }
+        }
+        //mapLikeHTMLCollection
+    }
+}
+
 
 
 function App() {
@@ -143,6 +199,10 @@ function App() {
                   socket.send('verify')
               })
 
+              document.getElementById('checkMap')?.addEventListener('click', () => {
+                  checkMap('0-0')
+              })
+
               for(let i = 0; i < mapLikeHTMLCollection.length; i++) {
                   mapLikeHTMLCollection.item(i)?.addEventListener('click',  () => {
                         const str : string = mapLikeHTMLCollection.item(i)!.textContent!.toString()
@@ -169,6 +229,7 @@ function App() {
           <img src={logo} className="App-logo" alt="logo"/>
             <TableMap thisMap={currentMap} />
             <button id={'verify'}>verify</button>
+            <button id={'checkMap'}>check</button>
         </header>
       </div>
   );
