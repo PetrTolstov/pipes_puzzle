@@ -50,7 +50,7 @@ function App() {
 
 
         socket.onopen = (event) => {
-            socket.send("new 1")
+            socket.send("new 3")
             socket.send("map")
             setTimeout(() => {
                 mapLikeHTMLCollection = document.getElementById('tableMap')!.getElementsByClassName('mapElement')

@@ -30,6 +30,29 @@
   border-radius: 20px;
   border-spacing: 0px;
 }
+
+#tableMap tbody{
+  display: block;
+  max-height: 500px;
+  max-width: 500px;
+  overflow-y: scroll
+}
+
+#tableMap tbody::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+#tableMap tbody::-webkit-scrollbar-track {
+  border: #491001 2px solid;
+  background-color: rgba(188, 102, 30, 0.4);
+}
+
+#tableMap tbody::-webkit-scrollbar-thumb {
+  background-color: #bd671e;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  border-radius: 30px;
+}
+
 .App-link {
   color: #61dafb;
 }
