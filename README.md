@@ -21,7 +21,7 @@ That is a main reason for removing the Autosolver from the final version.
 I came up with rainforest on the background and wooden interface style. In my opinion it is the best design for such puzzles game, it is really simple, clean and really nice to look at.
 
 ## Launch
-Just open the link pipespuzzle.herokuapp.com/ in your favorite browser.
+Just open the link pipespuzzle.herokuapp.com/ in your favorite browser (recommend to use Chrome).
 The user get to choose the level out of six options, they also have the verify button to know if they did right.
 And of course to rotate a shape just click on it
 
