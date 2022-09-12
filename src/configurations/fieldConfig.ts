@@ -1,10 +1,11 @@
 import {Directions} from "../types/directions";
 
+//There are configs and constants
 const oneOfThree = 20
 const twoOfThree = 40
 const wholeNumber = 60
 
-
+//Aligns connectable directions to each symbol (NOT IN USE FOR NOW)
 const puzzlesConfig = {
     "╻": {
         connectsDirections: [Directions.up],

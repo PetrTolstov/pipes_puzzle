@@ -1,154 +1,159 @@
 import {oneOfThree, twoOfThree, wholeNumber} from "../configurations/fieldConfig";
 //This thing rerender ALL puzzles (not one), I tried to fix that, but need more time for optimization
 
-export function canvasRender(canvas: any, puzzle: string) {
-    if (canvas.getContext) {
+export function canvasRender(canvas: any, puzzle: string, x : number, y :number) {
+
+    if (canvas != null && canvas.getContext) {
+
         var ctx = canvas.getContext('2d');
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.clearRect(x, y, 60, 60);
         ctx.beginPath();
+        ctx.strokeRect(x, y, 60, 60);
         switch (puzzle) {
             case "╻" :
-                ctx.moveTo(oneOfThree, twoOfThree);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(oneOfThree, twoOfThree);
+                ctx.moveTo(oneOfThree + x, twoOfThree + y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, twoOfThree + y);
+                ctx.lineTo(oneOfThree + x, twoOfThree + y);
                 break
             case "╸" :
-                ctx.moveTo(0, oneOfThree);
-                ctx.lineTo(oneOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, twoOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(0, oneOfThree);
+                ctx.moveTo(x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, twoOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
                 break
             case "╹" :
-                ctx.moveTo(oneOfThree, 0);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(twoOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, 0);
+                ctx.moveTo(oneOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, y);
                 break
             case "╺" :
-                ctx.moveTo(twoOfThree, oneOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(twoOfThree, oneOfThree);
+                ctx.moveTo(twoOfThree + x, oneOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(twoOfThree + x, twoOfThree + y);
+                ctx.lineTo(twoOfThree + x, oneOfThree + y);
                 break
 
             case "┗" :
-                ctx.moveTo(oneOfThree, 0);
-                ctx.lineTo(oneOfThree, twoOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(twoOfThree, oneOfThree);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(oneOfThree, 0);
+                ctx.moveTo(oneOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(twoOfThree + x, oneOfThree + y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, y);
                 break
             case "┏" :
-                ctx.moveTo(oneOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(oneOfThree, oneOfThree);
+                ctx.moveTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
                 break
             case "┓" :
-                ctx.moveTo(0, oneOfThree);
-                ctx.lineTo(twoOfThree, oneOfThree);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(oneOfThree, twoOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(0, oneOfThree);
+                ctx.moveTo(x, oneOfThree + y);
+                ctx.lineTo(twoOfThree + x, oneOfThree + y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(oneOfThree + x, twoOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
                 break
             case "┛" :
-                ctx.moveTo(0, oneOfThree);
-                ctx.lineTo(oneOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, 0);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(0, oneOfThree);
+                ctx.moveTo(x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, twoOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
                 break
 
             case "┫" :
-                ctx.moveTo(0, oneOfThree);
-                ctx.lineTo(oneOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, 0);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(oneOfThree, twoOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(0, oneOfThree);
+                ctx.moveTo(x, oneOfThree + y) ;
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(oneOfThree + x, twoOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
                 break
             case "┻":
-                ctx.moveTo(oneOfThree, 0);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(twoOfThree, oneOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(0, oneOfThree);
-                ctx.lineTo(oneOfThree, oneOfThree);
-                ctx.lineTo(oneOfThree, 0);
+                ctx.moveTo(oneOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(twoOfThree + x, oneOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(oneOfThree + x, y);
                 break
 
             case "┣" :
-                ctx.moveTo(wholeNumber, oneOfThree);
-                ctx.lineTo(twoOfThree, oneOfThree);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(oneOfThree, 0);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
+                ctx.moveTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(twoOfThree + x, oneOfThree + y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
                 break
             case "┳" :
-                ctx.moveTo(oneOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(0, oneOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(oneOfThree, twoOfThree);
-                ctx.lineTo(oneOfThree, wholeNumber);
+                ctx.moveTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(oneOfThree + x, twoOfThree + y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
                 break
 
             case "╋" :
-                ctx.moveTo(oneOfThree, 0);
-                ctx.lineTo(oneOfThree, oneOfThree);
-                ctx.lineTo(0, oneOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(oneOfThree, twoOfThree);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, twoOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(twoOfThree, oneOfThree);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(oneOfThree, 0);
+                ctx.moveTo(oneOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, oneOfThree + y);
+                ctx.lineTo(x, oneOfThree+ y);
+                ctx.lineTo(x, twoOfThree+ y);
+                ctx.lineTo(oneOfThree + x, twoOfThree+ y);
+                ctx.lineTo(oneOfThree + x, wholeNumber+ y);
+                ctx.lineTo(twoOfThree + x, wholeNumber+ y);
+                ctx.lineTo(twoOfThree + x, twoOfThree+ y);
+                ctx.lineTo(wholeNumber + x, twoOfThree+ y);
+                ctx.lineTo(wholeNumber + x, oneOfThree+ y);
+                ctx.lineTo(twoOfThree + x, oneOfThree+ y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, y);
                 break
 
             case "━" :
-                ctx.moveTo(0, oneOfThree);
-                ctx.lineTo(wholeNumber, oneOfThree);
-                ctx.lineTo(wholeNumber, twoOfThree);
-                ctx.lineTo(0, twoOfThree);
-                ctx.lineTo(0, oneOfThree);
+                ctx.moveTo(x, oneOfThree + y);
+                ctx.lineTo(wholeNumber + x, oneOfThree + y);
+                ctx.lineTo(wholeNumber + x, twoOfThree + y);
+                ctx.lineTo(x, twoOfThree + y);
+                ctx.lineTo(x, oneOfThree + y);
                 break
             case "┃" :
-                ctx.moveTo(oneOfThree, 0);
-                ctx.lineTo(oneOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, wholeNumber);
-                ctx.lineTo(twoOfThree, 0);
-                ctx.lineTo(oneOfThree, 0);
+                ctx.moveTo(oneOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, wholeNumber + y);
+                ctx.lineTo(twoOfThree + x, y);
+                ctx.lineTo(oneOfThree + x, y);
                 break
+            default:
+                console.log(puzzle)
         }
         //var randomColor = Math.floor(Math.random()*16777215).toString(16);
         ctx.fillStyle = `#fefefe`

@@ -1,3 +1,7 @@
+//THIS IS GROUNDWORKS WHICH I WANTED TO USE
+//For most part it is a code for checker, that mark solved aries
+//Also here is simple autocorrector based on BrutForce
+
 
 // @ts-ignore
 const manualRotation = {

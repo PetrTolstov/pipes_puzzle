@@ -1,3 +1,4 @@
+//type of directions to use
 enum Directions{
     right,
     left,

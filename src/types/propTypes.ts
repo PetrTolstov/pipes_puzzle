@@ -1,16 +1,14 @@
-import React from "react";
+//Props types for components
 
-type PropsTable = {
+type PropsTModal = {
+    isShown : boolean,
+    text: string,
+    closeModal: Function
+}
+
+
+type PropsMainCanvas = {
     thisMap : string[][]
 }
 
-type PropsCanvas = {
-    element : string
-}
-
-type PropsTableCell = {
-    id : string,
-    children : React.ReactNode
-}
-
-export type {PropsTable, PropsCanvas, PropsTableCell}
+export type {PropsMainCanvas, PropsTModal}
